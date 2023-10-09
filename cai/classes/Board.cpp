@@ -124,40 +124,74 @@ void Board::showAvailableMoves(int y, int x){
 }
 
 // Print the current board.
-void Board::printBoard() {
-    // Go through each tile, pieces are represented by their number, empty tiles are marked '-'.
-    for (int row = 0; row <= 8; row++){
-        if (row == 8){
-            printf("    a     b     c     d     e     f     g     h\n");
-        }
-        else{
-            for (int col = 0; col < 9; col++){
-                if (col == 0){
-                    printf("%d ", row+1);
+// void Board::printBoard() {
+//     // Go through each tile, pieces are represented by their number, empty tiles are marked '-'.
+//     for (int row = 0; row <= 8; row++){
+//         if (row == 8){
+//             printf("    a     b     c     d     e     f     g     h\n");
+//         }
+//         else{
+//             for (int col = 0; col < 9; col++){
+//                 if (col == 0){
+//                     printf("%d ", row+1);
+//                 }
+//                 else{
+//                     Piece piece = this->board[row][col-1];
+//                     if (piece.isPiece()){
+//                         printf("[");
+//                         piece.printPiece();
+//                         printf("]");
+//                     }
+//                     else{
+//                         printf("[ -- ]");
+//                     }
+//                 }
+//             }
+//             if (row == 2){
+//                 printf("   Black Score: %d", this->blackScore);
+//             }
+//             if (row == 5){
+//                 printf("   White Score: %d", this->whiteScore);
+//             }
+//             printf("\n");
+//         }
+
+//     }
+//     printf("\n");
+// }
+void Board::printBoard(){
+    for (int row = 0; row < 8; row++){
+        for (int lineNum = 1; lineNum < 7;  lineNum++){
+            // if (lineNum == 4){ printf("%d", row+1); }
+            for (int col = 0; col < 8; col++){
+                std::string pieceLine;
+                // printf("%d",lineNum);
+                switch (lineNum){
+                    case 1:
+                        pieceLine = board[row][col].getLine1();
+                        break;
+                    case 2:
+                        pieceLine = board[row][col].getLine2();
+                        break;
+                    case 3:
+                        pieceLine = board[row][col].getLine3();
+                        break;
+                    case 4:
+                        pieceLine = board[row][col].getLine4();
+                        break;
+                    case 5:
+                        pieceLine = board[row][col].getLine5();
+                        break;
+                    case 6:
+                        pieceLine = board[row][col].getLine6();
+                        break;
                 }
-                else{
-                    Piece piece = this->board[row][col-1];
-                    if (piece.isPiece()){
-                        printf("[");
-                        piece.printPiece();
-                        printf("]");
-                    }
-                    else{
-                        printf("[ -- ]");
-                    }
-                }
-            }
-            if (row == 2){
-                printf("   Black Score: %d", this->blackScore);
-            }
-            if (row == 5){
-                printf("   White Score: %d", this->whiteScore);
+                printf("%s", pieceLine.c_str());
             }
             printf("\n");
         }
-
+        printf("\n");
     }
-    printf("\n");
 }
 
 // void Board::printBoard() {   

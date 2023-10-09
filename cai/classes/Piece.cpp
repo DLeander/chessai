@@ -24,6 +24,7 @@ void Piece::UpdatePiece(int type, int side, int value, int ypos, int xpos, std::
     this->ypos  = ypos;
     this->moves = moves;
     this->totMoves = totMoves;
+    printType();
 }
 
 // Overloaded UpdatePiece method. Used for empty tiles.
@@ -1040,7 +1041,7 @@ void Piece::printType(){
 // Pretty prints for tiles with/without pieces.
 void Piece::printEmptyTile(){
     this->line1 = "_ _ _ _ _ _ _";
-    this->line2 = "|     	   |";
+    this->line2 = "|           |";
     this->line3 = "|           |";
     this->line4 = "|           |";
     this->line5 = "|           |";
@@ -1048,111 +1049,111 @@ void Piece::printEmptyTile(){
 }
 void Piece::printPawn(){
     if (this->side == 0){
-        this->line1 = R"('_ _ _ _ _ _ _')";
-        this->line2 = R"('|     	  |')";
-        this->line3 = R"('|     o     |')";
-        this->line4 = R"('|    ( )    |')";
-        this->line5 = R"('|   (___)   |')";
-        this->line6 = R"('|_ _ _ _ _ _|')";
+        this->line1 = R"(_ _ _ _ _ _ _)";
+        this->line2 = R"(|           |)";
+        this->line3 = R"(|     o     |)";
+        this->line4 = R"(|    ( )    |)";
+        this->line5 = R"(|   (___)   |)";
+        this->line6 = R"(|_ _ _ _ _ _|)";
     }
     else{
-        this->line1 = R"('_ _ _ _ _ _ _')";
-        this->line2 = R"('|     	  |')";
-        this->line3 = R"('|     o     |')";
-        this->line4 = R"('|    (*)    |')";
-        this->line5 = R"('|   (***)   |')";
-        this->line6 = R"('|_ _ _ _ _ _|')";
+        this->line1 = R"(_ _ _ _ _ _ _)";
+        this->line2 = R"(|           |)";
+        this->line3 = R"(|     o     |)";
+        this->line4 = R"(|    (*)    |)";
+        this->line5 = R"(|   (***)   |)";
+        this->line6 = R"(|_ _ _ _ _ _|)";
     }
 }
 void Piece::printBishop(){
     if (this->side == 0){
-        this->line1 = R"('_ _ _ _ _ _ _')";
-        this->line2 = R"('|     o	  |')";
-        this->line3 = R"('|    (\)    |')";
-        this->line4 = R"('|    ( )    |')";
-        this->line5 = R"('|    ( )    |')";
-        this->line6 = R"('|_ _(_ _)_ _|')";
+        this->line1 = R"(_ _ _ _ _ _ _)";
+        this->line2 = R"(|     o     |)";
+        this->line3 = R"(|    (\)    |)";
+        this->line4 = R"(|    ( )    |)";
+        this->line5 = R"(|    ( )    |)";
+        this->line6 = R"(|_ _(_ _)_ _|)";
     }
     else{
-        this->line1 = R"('_ _ _ _ _ _ _')";
-        this->line2 = R"('|     o	  |')";
-        this->line3 = R"('|    (\)    |')";
-        this->line4 = R"('|    (*)    |')";
-        this->line5 = R"('|    (*)    |')";
-        this->line6 = R"('|_ _(***)_ _|')";
+        this->line1 = R"(_ _ _ _ _ _ _)";
+        this->line2 = R"(|     o     |)";
+        this->line3 = R"(|    (\)    |)";
+        this->line4 = R"(|    (*)    |)";
+        this->line5 = R"(|    (*)    |)";
+        this->line6 = R"(|_ _(***)_ _|)";
     }
 }
 void Piece::printKnight(){
     if (this->side == 0){
-        this->line1 = R"('_ _ _ _ _ _ _')";
-        this->line2 = R"('|    |\_    |')";
-        this->line3 = R"('|   /  .\_  |')";
-        this->line4 = R"('|  (    __) |')";
-        this->line5 = R"('|  (    )   |')";
-        this->line6 = R"('|_/_ _ _\_ _|')";
+        this->line1 = R"(_ _ _ _ _ _ _)";
+        this->line2 = R"(|    |\_    |)";
+        this->line3 = R"(|   /  .\_  |)";
+        this->line4 = R"(|  (    __) |)";
+        this->line5 = R"(|  (    )   |)";
+        this->line6 = R"(|_/_ _ _\_ _|)";
     }
     else{
-        this->line1 = R"('_ _ _ _ _ _ _')";
-        this->line2 = R"('|    |\_    |')";
-        this->line3 = R"('|   /**.\_  |')";
-        this->line4 = R"('|  (****__) |')";
-        this->line5 = R"('|  (****)   |')";
-        this->line6 = R"('|_/* * *\_ _|')";
+        this->line1 = R"(_ _ _ _ _ _ _)";
+        this->line2 = R"(|    |\_    |)";
+        this->line3 = R"(|   /**.\_  |)";
+        this->line4 = R"(|  (****__) |)";
+        this->line5 = R"(|  (****)   |)";
+        this->line6 = R"(|_/* * *\_ _|)";
     }
 }
 void Piece::printRook(){
     if (this->side == 0){
-        this->line1 = R"('_ _ _ _ _ _ _')";
-        this->line2 = R"('|   |_|_|   |')";
-        this->line3 = R"('|    | |    |')";
-        this->line4 = R"('|   /   \   |')";
-        this->line5 = R"('|   |   |   |')";
-        this->line6 = R"('|_ _|_ _|_ _|')";
+        this->line1 = R"(_ _ _ _ _ _ _)";
+        this->line2 = R"(|   |_|_|   |)";
+        this->line3 = R"(|    | |    |)";
+        this->line4 = R"(|   /   \   |)";
+        this->line5 = R"(|   |   |   |)";
+        this->line6 = R"(|_ _|_ _|_ _|)";
     }
     else{
-        this->line1 = R"('_ _ _ _ _ _ _')";
-        this->line2 = R"('|   |_|_|   |')";
-        this->line3 = R"('|    |*|    |')";
-        this->line4 = R"('|   /***\   |')";
-        this->line5 = R"('|   |***|   |')";
-        this->line6 = R"('|_ _|***|_ _|')";
+        this->line1 = R"(_ _ _ _ _ _ _)";
+        this->line2 = R"(|   |_|_|   |)";
+        this->line3 = R"(|    |*|    |)";
+        this->line4 = R"(|   /***\   |)";
+        this->line5 = R"(|   |***|   |)";
+        this->line6 = R"(|_ _|***|_ _|)";
     }
 }
 // 11
 void Piece::printQueen(){
     if (this->side == 0){
-        this->line1 = R"('_ _ _ _ _ _ _')";
-        this->line2 = R"('|    \0/    |')";
-        this->line3 = R"('|    { }    |')";
-        this->line4 = R"('|    / \    |')";
-        this->line5 = R"('|    \ /    |')";
-        this->line6 = R"('|_ _(_ _)_ _|')";
+        this->line1 = R"(_ _ _ _ _ _ _)";
+        this->line2 = R"(|    \0/    |)";
+        this->line3 = R"(|    { }    |)";
+        this->line4 = R"(|    / \    |)";
+        this->line5 = R"(|    \ /    |)";
+        this->line6 = R"(|_ _(_ _)_ _|)";
     }
     else{
-        this->line1 = R"('_ _ _ _ _ _ _')";
-        this->line2 = R"('|    \0/    |')";
-        this->line3 = R"('|    {*}    |')";
-        this->line4 = R"('|    /*\    |')";
-        this->line5 = R"('|    \*/    |')";
-        this->line6 = R"('|_ _(***)_ _|')";
+        this->line1 = R"(_ _ _ _ _ _ _)";
+        this->line2 = R"(|    \0/    |)";
+        this->line3 = R"(|    {*}    |)";
+        this->line4 = R"(|    /*\    |)";
+        this->line5 = R"(|    \*/    |)";
+        this->line6 = R"(|_ _(***)_ _|)";
     }
 }
 void Piece::printKing(){
     if (this->side == 0){
-        this->line1 = R"('_ _ _ _ _ _ _')";
-        this->line2 = R"('|    \+/    |')";
-        this->line3 = R"('|    / \    |')";
-        this->line4 = R"('|    \ /    |')";
-        this->line5 = R"('|    ) (    |')";
-        this->line6 = R"('|_ _(_ _)_ _|')";
+        this->line1 = R"(_ _ _ _ _ _ _)";
+        this->line2 = R"(|    \+/    |)";
+        this->line3 = R"(|    / \    |)";
+        this->line4 = R"(|    \ /    |)";
+        this->line5 = R"(|    ) (    |)";
+        this->line6 = R"(|_ _(_ _)_ _|)";
     }
     else{
-        this->line1 = R"('_ _ _ _ _ _ _')";
-        this->line2 = R"('|    \+/    |')";
-        this->line3 = R"('|    /*\    |')";
-        this->line4 = R"('|    \*/    |')";
-        this->line5 = R"('|    )*(    |')";
-        this->line6 = R"('|_ _(***)_ _|')";
+        this->line1 = R"(_ _ _ _ _ _ _)";
+        this->line2 = R"(|    \+/    |)";
+        this->line3 = R"(|    /*\    |)";
+        this->line4 = R"(|    \*/    |)";
+        this->line5 = R"(|    )*(    |)";
+        this->line6 = R"(|_ _(***)_ _|)";
     }
 }
 
