@@ -741,7 +741,7 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
         kingCol = wKingPos.x;
     }
 
-    // Examine possible pawn checks (With bishop and queen at the same time).
+    // Examine possible pawn checks.
     if (this->side == 0){
         if (kingRow+1 <= 7){
             if (kingCol+1 <= 7){

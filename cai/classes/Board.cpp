@@ -160,6 +160,7 @@ void Board::showAvailableMoves(int y, int x){
 //     printf("\n");
 // }
 void Board::printBoard(){
+    std::cout<< u8"\033[2J\033[1;1H";
     for (int row = 0; row < 8; row++){
         for (int lineNum = 1; lineNum < 7;  lineNum++){
             // if (lineNum == 4){ printf("%d", row+1); }
@@ -190,40 +191,6 @@ void Board::printBoard(){
             }
             printf("\n");
         }
-        printf("\n");
+        // printf("\n");
     }
 }
-
-// void Board::printBoard() {   
-//     for (int row = 0; row < 8; row++) {
-//         for (int i = 0; i < 6; i++) {
-//             for (int col = 0; col < 8; col++) {
-//                 std::string pieceLine;
-
-//                 if (i == 0) {
-//                     pieceLine = board[row][col].getLine1();
-//                 }
-//                 else if (i == 1) {
-//                     pieceLine = board[row][col].getLine2();
-//                 }
-//                 else if (i == 2) {
-//                     pieceLine = board[row][col].getLine3();
-//                 }
-//                 else if (i == 3) {
-//                     pieceLine = board[row][col].getLine4();
-//                 }
-//                 else if (i == 4) {
-//                     pieceLine = board[row][col].getLine5();
-//                 }
-//                 else if (i == 5) {
-//                     pieceLine = board[row][col].getLine6();
-//                 }
-
-//                 // Ensure each cell has a fixed width for alignment.
-//                 std::cout << std::setw(13) << std::left << pieceLine;
-//             }
-//         }
-//         std::cout << "\n";
-//     }
-//     std::cout << "\n";
-// }

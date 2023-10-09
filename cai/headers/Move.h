@@ -13,7 +13,7 @@ public:
     // Move(); // Destructor
 
     // Member functions
-    bool applyMove(Board* chessboard, int transformTo);
+    bool applyMove(Board* chessboard, int transformTo, int currentSide);
     bool incorrectSideMove(Piece start_piece, bool side);
     bool isCastleMove(Piece** board, Piece piece, int starty, int startx, int endy, int endx);
     bool isEnPassantMove(Piece** board, Piece piece, int starty, int startx, int endy, int endx);

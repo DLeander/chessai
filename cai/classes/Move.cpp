@@ -14,7 +14,7 @@ Move::Move(int ystart, int xstart, int yend, int xend){
 }
 
 // Applies the move on the board.
-bool Move::applyMove(Board* chessboard, int transformTo){
+bool Move::applyMove(Board* chessboard, int transformTo, int currentSide){
     Piece** board = chessboard->getBoard();
 
     // Translate strings to correct row and column
@@ -35,6 +35,11 @@ bool Move::applyMove(Board* chessboard, int transformTo){
     int totMoves = piece.getTotMoves();
     piece.getAvailableMoves(board, chessboard->getwKingPos(), chessboard->getbKingPos());
     std::vector<Coordinate> moves = piece.getMoves();
+
+    // If piece not on the current side. Return false.
+    if (side != currentSide){
+        return false;
+    }
     // Go through possible moves for the piece and make sure that the move to be made is there.
     if (!isValidMove(moves, end_row, end_col)){
         return false;
