@@ -20,9 +20,12 @@ public:
     // Getters
     Coordinate getbKingPos();
     Coordinate getwKingPos();
+    int getMaterial(int side);
+
     // Setters
-    void setScore(bool team, int score);
+    void setScore(bool side, int score);
     void updateKingPos(Coordinate newPos, int side);
+    void setMaterial(int side, int value);
 
 private:
     // The chessboard.
@@ -37,4 +40,7 @@ private:
     bool wCheck;
     Coordinate bKingPos;
     Coordinate wKingPos;
+    
+    int whiteMaterial;
+    int blackMaterial;
 };

@@ -14,6 +14,7 @@ public:
 
     // Member functions
     bool applyMove(Board* chessboard, int transformTo, int currentSide);
+    void undoMove(Board* chessboard, Piece selectedPiece, Piece capturedPiece);
     bool incorrectSideMove(Piece start_piece, bool side);
     bool isCastleMove(Piece** board, Piece piece, int starty, int startx, int endy, int endx);
     bool isEnPassantMove(Piece** board, Piece piece, int starty, int startx, int endy, int endx);

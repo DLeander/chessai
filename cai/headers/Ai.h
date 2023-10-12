@@ -1,25 +1,8 @@
 #pragma once  // Include guards to prevent multiple inclusion
 
 // #include "Move.h"
-#include "Board.h"
+#include "Piece.h"
+#include "Move.h"
 
-// Forward declaration
-class Board;
+std::tuple <Coordinate,Coordinate> findBestMove(Board* chessboard, Piece** board, int depth, bool side);
 
-class Ai {
-public:
-    Ai();  // Constructor
-    ~Ai(); // Destructor
-
-    // Member functions
-
-
-    // Getters
-
-
-    // Setters
-
-
-private:
-
-};

@@ -19,6 +19,10 @@ Board::Board() {
     this->whiteScore = 0;
     this->blackScore = 0;
 
+    // Set material for each team. (Sum of all piece values.)
+    this->whiteMaterial = 45;
+    this->blackMaterial = 45;
+
     // Check is not possible from the start.
     this->bCheck = false;
     this->wCheck = false;
@@ -30,7 +34,6 @@ Board::Board() {
 
     // Populate the board.
     populateBoard();
-
 }
 
 Board::~Board(){
@@ -65,6 +68,22 @@ void Board::setScore(bool team, int score){
     }
 }
 
+void Board::setMaterial(int side, int value){
+    if (side == 0){
+        this->blackMaterial = this->blackMaterial - value;
+    }
+    else{
+        this->whiteMaterial = this->whiteMaterial - value;
+    }
+    
+}
+int Board::getMaterial(int side){
+    if (side == 0){
+        return this->blackMaterial;
+    }
+    return this->whiteMaterial;
+    
+}
 Piece** Board::getBoard(){
     return this->board;
 }

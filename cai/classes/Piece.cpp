@@ -8,7 +8,7 @@
 Piece::Piece() {
     this->type        = -1;
     this->side        = -1;
-    this->value       = -1;
+    this->value       = 0;
     this->xpos        = -1;
     this->ypos        = -1;
     this->totMoves    = 0;
@@ -31,7 +31,7 @@ void Piece::UpdatePiece(int type, int side, int value, int ypos, int xpos, std::
 void Piece::UpdatePiece() {
     this->type        = -1;
     this->side        = -1;
-    this->value       = -1;
+    this->value       = 0;
     this->xpos        = -1;
     this->ypos        = -1;
     this->totMoves    = 0;
@@ -466,7 +466,6 @@ void Piece::rookMoves(Piece** board, Coordinate wKingPos, Coordinate bKingPos){
 
     // Check for castle move to the left.
     if (this->totMoves == 0 && !board[y][x-1].isPiece() && !board[y][x-2].isPiece() && board[y][x-3].getType() == 6 && board[y][x-3].getTotMoves() == 0){
-        printf("hej\n");
         Coordinate pos1;
         Coordinate pos2;
         pos1.x = x-1;
@@ -479,7 +478,6 @@ void Piece::rookMoves(Piece** board, Coordinate wKingPos, Coordinate bKingPos){
         cord.y = y;
         if (!isCheckedTiles(board, cord, wKingPos, bKingPos) && !isCheckedTiles(board, cord, pos1, pos1) && !isCheckedTiles(board, cord, pos2, pos2)){
             if (this->side == 1){
-                printf("olabero\n");
                 this->moves.push_back(wKingPos);
             }
             else if (this->side == 0){
@@ -752,7 +750,7 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
                     return true;
                 }
             }
-            if (col-1 >= 0){
+            if (kingCol-1 >= 0){
                 if (board[kingRow+1][kingCol-1].getType() == 1 && board[kingRow+1][kingCol-1].getSide() != this->side){
                     board[oldrow][oldcol].UpdatePiece(oldtype, oldside, oldvalue, oldrow, oldcol, oldmoves, oldtotMoves);
                     board[row][col].UpdatePiece(storedType, storedSide, storedValue, row, col, storedMoves, storedtotMoves);
@@ -772,7 +770,7 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
                     return true;
                 }
             }
-            if (col-1 >= 0){
+            if (kingCol-1 >= 0){
                 if (board[kingRow-1][kingCol-1].getType() == 1 && board[kingRow-1][kingCol-1].getSide() != this->side){
                     board[oldrow][oldcol].UpdatePiece(oldtype, oldside, oldvalue, oldrow, oldcol, oldmoves, oldtotMoves);
                     board[row][col].UpdatePiece(storedType, storedSide, storedValue, row, col, storedMoves, storedtotMoves);
@@ -798,8 +796,6 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
         if ((board[kingRow-ur][kingCol+ur].getType() == 2 && board[kingRow-ur][kingCol+ur].getSide() != this->side) || (board[kingRow-ur][kingCol+ur].getType() == 5 && board[kingRow-ur][kingCol+ur].getSide() != this->side)){
             board[oldrow][oldcol].UpdatePiece(oldtype, oldside, oldvalue, oldrow, oldcol, oldmoves, oldtotMoves);
             board[row][col].UpdatePiece(storedType, storedSide, storedValue, row, col, storedMoves, storedtotMoves);
-            printf("TYPE: %d\nX:%d\nY:%d\n", board[kingRow-ur][kingCol+ur].getType(), kingCol+ur, kingRow-ur);
-            printf("MOVING TO X:%d and Y:%d\n", col, row);
             printf("BISHOP1\n");
             return true;
         }
@@ -819,8 +815,8 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
         if ((board[kingRow-ul][kingCol-ul].getType() == 2 && board[kingRow-ul][kingCol-ul].getSide() != this->side) || (board[kingRow-ul][kingCol-ul].getType() == 5 && board[kingRow-ul][kingCol-ul].getSide() != this->side && board[kingRow-ul][kingCol-ul].getType() != -1)){
             board[oldrow][oldcol].UpdatePiece(oldtype, oldside, oldvalue, oldrow, oldcol, oldmoves, oldtotMoves);
             board[row][col].UpdatePiece(storedType, storedSide, storedValue, row, col, storedMoves, storedtotMoves);
-            // printf("TYPE: %d\nX:%d\nY:%d\n", board[kingRow-ul][kingCol-ul].getType(), kingCol-ul, kingRow-ul);
-            // printf("MOVING TO X:%d and Y:%d\n", col, row);
+            printf("TYPE: %d\nX:%d\nY:%d\n", board[kingRow-ul][kingCol-ul].getType(), kingCol-ul, kingRow-ul);
+            printf("MOVING TO X:%d and Y:%d\n", col, row);
             printf("BISHOP2\n");
             return true;
         }
