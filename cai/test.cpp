@@ -84,9 +84,12 @@ void ai_test_capture_piece(){
 
     board[3][2].UpdatePiece(2, 1, 3, 3, 2, moves, 0);
     board[0][5].UpdatePiece(2, 0, 3, 0, 5, moves, 0);
+    chessboard->printBoard();
     std::tuple<Coordinate,Coordinate> selected_move = findBestMove(chessboard, board, 3, 1);
+    // Create the move 
     Move* move = new Move(std::get<0>(selected_move).y, std::get<0>(selected_move).x, std::get<1>(selected_move).y, std::get<1>(selected_move).x);
     move->applyMove(chessboard, 0, 1);
+    chessboard->printBoard();
 
     delete move;
     delete board;
