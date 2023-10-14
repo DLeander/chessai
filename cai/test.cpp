@@ -84,9 +84,10 @@ void ai_test_capture_piece(){
 
     board[3][2].UpdatePiece(2, 1, 3, 3, 2, moves, 0);
     board[0][5].UpdatePiece(2, 0, 3, 0, 5, moves, 0);
-    std::tuple<Coordinate,Coordinate> selected_move = findBestMove(chessboard, board, 3, 0);
+    std::tuple <Coordinate,Coordinate,int> selected_move = findBestMove(chessboard, board, 3, 0);
     // Create the move 
-    printf("Move: y:%d x: %d\t y:%d x:%d\n\n", std::get<0>(selected_move).y, std::get<0>(selected_move).x, std::get<0>(selected_move).y, std::get<0>(selected_move).x);
+    // printf("Move: y:%d x: %d\t y:%d x:%d\n\n", std::get<0>(selected_move).y, std::get<0>(selected_move).x, std::get<1>(selected_move).y, std::get<1>(selected_move).x);
+    // printf("THE MOVE HEURISTIC: %d\n", std::get<2>(selected_move));
     Move* move = new Move(std::get<0>(selected_move).y, std::get<0>(selected_move).x, std::get<1>(selected_move).y, std::get<1>(selected_move).x);
     move->applyMove(chessboard, 0, 0);
     // chessboard->printBoard();
@@ -108,13 +109,13 @@ void ai_test_capture_best_piece(){
     board[0][5].UpdatePiece(2, 0, 3, 0, 5, moves, 0);
     board[5][4].UpdatePiece(4, 0, 5, 5, 4, moves, 0);
 
-    std::tuple<Coordinate,Coordinate> selected_move = findBestMove(chessboard, board, 3, 1);
+    std::tuple<Coordinate,Coordinate, int> selected_move = findBestMove(chessboard, board, 3, 1);
     // chessboard->printBoard();
     // Create the move 
     Move* move = new Move(std::get<0>(selected_move).y, std::get<0>(selected_move).x, std::get<1>(selected_move).y, std::get<1>(selected_move).x);
     move->applyMove(chessboard, 0, 1);
     // chessboard->printBoard();
-    // assert(board[5][4].getType() == 2 && board[5][4].getSide() == 1);
+    assert(board[5][4].getType() == 2 && board[5][4].getSide() == 1);
 
     delete move;
     delete board;
@@ -136,15 +137,23 @@ void ai_test_no_heuristic_gain(){
 
     board[1][3].UpdatePiece(1, 0, 1, 1, 3, moves, 0);
     board[6][4].UpdatePiece(1, 1, 1, 6, 4, moves, 0);
-    chessboard->printBoard();
+    // chessboard->printBoard();
 
-    std::tuple<Coordinate,Coordinate> selected_move = findBestMove(chessboard, board, 3, 1);
+    std::tuple<Coordinate,Coordinate, int> selected_move = findBestMove(chessboard, board, 3, 1);
     Move* move = new Move(std::get<0>(selected_move).y, std::get<0>(selected_move).x, std::get<1>(selected_move).y, std::get<1>(selected_move).x);
     move->applyMove(chessboard, 0, 1);
 
-    chessboard->printBoard();
+    // chessboard->printBoard();
 
     printf("Test 'No Heuristic Gain' was successful.\n");
+}
+
+void ai_test_negative_heuristic_gain(){
+    Board* chessboard = new Board();
+    Piece** board = chessboard->getBoard();
+    emptyBoard(board);
+
+    printf("Test 'Test Negative Heuristic Gain' was successful.\n");
 }
 
 void ai_test_checks_king(){
@@ -162,6 +171,7 @@ int main() {
     ai_test_capture_piece();
     ai_test_capture_best_piece();
     ai_test_no_heuristic_gain();
+    ai_test_negative_heuristic_gain();
     ai_test_checks_king();
     printf("-------------------------------\n");
     return 0;

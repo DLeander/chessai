@@ -4,5 +4,5 @@
 #include "Piece.h"
 #include "Move.h"
 
-std::tuple <Coordinate,Coordinate> findBestMove(Board* chessboard, Piece** board, int depth, bool side);
+std::tuple <Coordinate,Coordinate,int> findBestMove(Board* chessboard, Piece** board, int depth, bool side);
 

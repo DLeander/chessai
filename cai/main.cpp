@@ -33,7 +33,7 @@ void GameLoop(Board* chessboard, int level){
         //     printf("\nCheckmate. Side %d won.\n", side);
         //     break;
         // }
-        // chessboard->printBoard();
+        chessboard->printBoard();
 
         // White plays.
         int x_start, y_start, x_end, y_end;
@@ -49,7 +49,7 @@ void GameLoop(Board* chessboard, int level){
         }
         else{
             printf("Playing as black.\n");
-            std::tuple <Coordinate, Coordinate> result = findBestMove(chessboard, board, 3, 0);
+            std::tuple <Coordinate, Coordinate, int> result = findBestMove(chessboard, board, 1, 0);
             y_start = std::get<0>(result).y;
             x_start = std::get<0>(result).x;
             y_end = std::get<1>(result).y;
@@ -73,8 +73,8 @@ void GameLoop(Board* chessboard, int level){
         }
         delete move;
 
-        printf("Material black: %d\n", chessboard->getMaterial(0));
-        printf("Material white: %d\n", chessboard->getMaterial(1));
+        // printf("Material black: %d\n", chessboard->getMaterial(0));
+        // printf("Material white: %d\n", chessboard->getMaterial(1));
         // Switch the side.
         if (side == 1){
             side = 0;
