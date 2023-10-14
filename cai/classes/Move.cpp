@@ -151,7 +151,8 @@ bool Move::applyMove(Board* chessboard, int transformTo, int currentSide){
 
         // Remove piece that gets captured due to en passant
         Piece pieceRemove = board[start_row][end_col];
-        chessboard->setMaterial(pieceRemove.getSide(), pieceRemove.getValue());
+        chessboard->setMaterial(!side, 1);
+        // chessboard->setMaterial(pieceRemove.getSide(), pieceRemove.getValue());
         board[start_row][end_col].UpdatePiece();
     }
     else if (isCastleMove(board, piece, start_row, start_col, end_row, end_col)){
@@ -225,7 +226,6 @@ bool Move::applyMove(Board* chessboard, int transformTo, int currentSide){
         else{
             // Place Piece on moved tile.
             board[end_row][end_col].UpdatePiece(type, side, value, end_row, end_col, moves, totMoves++);
-            
         }
     }
     return true;

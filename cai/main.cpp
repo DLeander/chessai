@@ -49,7 +49,7 @@ void GameLoop(Board* chessboard, int level){
         }
         else{
             printf("Playing as black.\n");
-            std::tuple <Coordinate, Coordinate, int> result = findBestMove(chessboard, board, 1, 0);
+            std::tuple <Coordinate, Coordinate, int> result = findBestMove(chessboard, board, 3, 0);
             y_start = std::get<0>(result).y;
             x_start = std::get<0>(result).x;
             y_end = std::get<1>(result).y;

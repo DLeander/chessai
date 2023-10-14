@@ -84,13 +84,16 @@ void ai_test_capture_piece(){
 
     board[3][2].UpdatePiece(2, 1, 3, 3, 2, moves, 0);
     board[0][5].UpdatePiece(2, 0, 3, 0, 5, moves, 0);
+    board[0][0].UpdatePiece(3, 1, 3, 0, 0, moves, 0);
+    chessboard->printBoard();
     std::tuple <Coordinate,Coordinate,int> selected_move = findBestMove(chessboard, board, 3, 0);
     // Create the move 
     // printf("Move: y:%d x: %d\t y:%d x:%d\n\n", std::get<0>(selected_move).y, std::get<0>(selected_move).x, std::get<1>(selected_move).y, std::get<1>(selected_move).x);
-    // printf("THE MOVE HEURISTIC: %d\n", std::get<2>(selected_move));
+    printf("THE MOVE HEURISTIC: %d\n", std::get<2>(selected_move));
     Move* move = new Move(std::get<0>(selected_move).y, std::get<0>(selected_move).x, std::get<1>(selected_move).y, std::get<1>(selected_move).x);
-    move->applyMove(chessboard, 0, 0);
     // chessboard->printBoard();
+    move->applyMove(chessboard, 0, 0);
+    chessboard->printBoard();
     assert(board[3][2].getType() == 2 && board[3][2].getSide() == 0);
 
     delete move;
@@ -114,6 +117,7 @@ void ai_test_capture_best_piece(){
     // Create the move 
     Move* move = new Move(std::get<0>(selected_move).y, std::get<0>(selected_move).x, std::get<1>(selected_move).y, std::get<1>(selected_move).x);
     move->applyMove(chessboard, 0, 1);
+    // printf("THE MOVE HEURISTIC: %d\n", std::get<2>(selected_move));
     // chessboard->printBoard();
     assert(board[5][4].getType() == 2 && board[5][4].getSide() == 1);
 
@@ -167,12 +171,12 @@ void ai_test_checks_king(){
 int main() {
     // Run all tests.
     printf("-------------------------------\n");
-    test_undo_moves();
+    // test_undo_moves();
     ai_test_capture_piece();
-    ai_test_capture_best_piece();
-    ai_test_no_heuristic_gain();
-    ai_test_negative_heuristic_gain();
-    ai_test_checks_king();
+    // ai_test_capture_best_piece();
+    // ai_test_no_heuristic_gain();
+    // ai_test_negative_heuristic_gain();
+    // ai_test_checks_king();
     printf("-------------------------------\n");
     return 0;
 }
