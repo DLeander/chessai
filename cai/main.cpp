@@ -33,7 +33,7 @@ void GameLoop(Board* chessboard, int level){
         //     printf("\nCheckmate. Side %d won.\n", side);
         //     break;
         // }
-        chessboard->printBoard();
+        // chessboard->printBoard();
 
         // White plays.
         int x_start, y_start, x_end, y_end;
@@ -49,14 +49,19 @@ void GameLoop(Board* chessboard, int level){
         }
         else{
             printf("Playing as black.\n");
-            // std::tuple <Coordinate, int> result = findBestMove(chessboard, board, 3, 0);
-            std::cout << "Select piece (y x): ";
-            std::cin >> y_start >> x_start;
+            std::tuple <Coordinate, Coordinate> result = findBestMove(chessboard, board, 3, 0);
+            y_start = std::get<0>(result).y;
+            x_start = std::get<0>(result).x;
+            y_end = std::get<1>(result).y;
+            x_end = std::get<1>(result).x;
+            // printf("y_start: %d\nx_start: %d\ny_end: %d\nx_end: %d\n", y_start, x_start, y_end, x_end);
+            // std::cout << "Select piece (y x): ";
+            // std::cin >> y_start >> x_start;
             
-            chessboard->showAvailableMoves(y_start, x_start);
+            // chessboard->showAvailableMoves(y_start, x_start);
 
-            std::cout << "Select destination (y x): ";
-            std::cin >> y_end >> x_end;
+            // std::cout << "Select destination (y x): ";
+            // std::cin >> y_end >> x_end;
         }
         // board[y_start][x_start].getAvailableMoves(board, chessboard->getwKingPos(), chessboard->getbKingPos());
         Move* move = new Move(y_start, x_start, y_end, x_end);

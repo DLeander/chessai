@@ -746,7 +746,7 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
                 if (board[kingRow+1][kingCol+1].getType() == 1 && board[kingRow+1][kingCol+1].getSide() != this->side){
                     board[oldrow][oldcol].UpdatePiece(oldtype, oldside, oldvalue, oldrow, oldcol, oldmoves, oldtotMoves);
                     board[row][col].UpdatePiece(storedType, storedSide, storedValue, row, col, storedMoves, storedtotMoves);
-                    printf("PAWN1\n");
+                    // printf("PAWN1\n");
                     return true;
                 }
             }
@@ -754,7 +754,7 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
                 if (board[kingRow+1][kingCol-1].getType() == 1 && board[kingRow+1][kingCol-1].getSide() != this->side){
                     board[oldrow][oldcol].UpdatePiece(oldtype, oldside, oldvalue, oldrow, oldcol, oldmoves, oldtotMoves);
                     board[row][col].UpdatePiece(storedType, storedSide, storedValue, row, col, storedMoves, storedtotMoves);
-                    printf("PAWN2\n");
+                    // printf("PAWN2\n");
                     return true;
                 }
             }
@@ -766,7 +766,7 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
                 if (board[kingRow-1][kingCol+1].getType() == 1 && board[kingRow-1][kingCol+1].getSide() != this->side){
                     board[oldrow][oldcol].UpdatePiece(oldtype, oldside, oldvalue, oldrow, oldcol, oldmoves, oldtotMoves);
                     board[row][col].UpdatePiece(storedType, storedSide, storedValue, row, col, storedMoves, storedtotMoves);
-                    printf("PAWN3\n");
+                    // printf("PAWN3\n");
                     return true;
                 }
             }
@@ -774,7 +774,7 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
                 if (board[kingRow-1][kingCol-1].getType() == 1 && board[kingRow-1][kingCol-1].getSide() != this->side){
                     board[oldrow][oldcol].UpdatePiece(oldtype, oldside, oldvalue, oldrow, oldcol, oldmoves, oldtotMoves);
                     board[row][col].UpdatePiece(storedType, storedSide, storedValue, row, col, storedMoves, storedtotMoves);
-                    printf("PAWN4\n");
+                    // printf("PAWN4\n");
                     return true;
                 }
             }
@@ -796,7 +796,7 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
         if ((board[kingRow-ur][kingCol+ur].getType() == 2 && board[kingRow-ur][kingCol+ur].getSide() != this->side) || (board[kingRow-ur][kingCol+ur].getType() == 5 && board[kingRow-ur][kingCol+ur].getSide() != this->side)){
             board[oldrow][oldcol].UpdatePiece(oldtype, oldside, oldvalue, oldrow, oldcol, oldmoves, oldtotMoves);
             board[row][col].UpdatePiece(storedType, storedSide, storedValue, row, col, storedMoves, storedtotMoves);
-            printf("BISHOP1\n");
+            // printf("BISHOP1\n");
             return true;
         }
     }
@@ -815,9 +815,7 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
         if ((board[kingRow-ul][kingCol-ul].getType() == 2 && board[kingRow-ul][kingCol-ul].getSide() != this->side) || (board[kingRow-ul][kingCol-ul].getType() == 5 && board[kingRow-ul][kingCol-ul].getSide() != this->side && board[kingRow-ul][kingCol-ul].getType() != -1)){
             board[oldrow][oldcol].UpdatePiece(oldtype, oldside, oldvalue, oldrow, oldcol, oldmoves, oldtotMoves);
             board[row][col].UpdatePiece(storedType, storedSide, storedValue, row, col, storedMoves, storedtotMoves);
-            printf("TYPE: %d\nX:%d\nY:%d\n", board[kingRow-ul][kingCol-ul].getType(), kingCol-ul, kingRow-ul);
-            printf("MOVING TO X:%d and Y:%d\n", col, row);
-            printf("BISHOP2\n");
+            // printf("BISHOP2\n");
             return true;
         }
     }
@@ -836,7 +834,7 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
         if ((board[kingRow+lr][kingCol+lr].getType() == 2 && board[kingRow+lr][kingCol+lr].getSide() != this->side) || (board[kingRow+lr][kingCol+lr].getType() == 5 && board[kingRow+lr][kingCol+lr].getSide() != this->side)){
             board[oldrow][oldcol].UpdatePiece(oldtype, oldside, oldvalue, oldrow, oldcol, oldmoves, oldtotMoves);
             board[row][col].UpdatePiece(storedType, storedSide, storedValue, row, col, storedMoves, storedtotMoves);
-            printf("BISHOP3\n");
+            // printf("BISHOP3\n");
             return true;
         }
     }
@@ -855,7 +853,7 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
         if ((board[kingRow+ll][kingCol-ll].getType() == 2 && board[kingRow+ll][kingCol-ll].getSide() != this->side) || (board[kingRow+ll][kingCol-ll].getType() == 5 && board[kingRow+ll][kingCol-ll].getSide() != this->side)){
             board[oldrow][oldcol].UpdatePiece(oldtype, oldside, oldvalue, oldrow, oldcol, oldmoves, oldtotMoves);
             board[row][col].UpdatePiece(storedType, storedSide, storedValue, row, col, storedMoves, storedtotMoves);
-            printf("BISHOP4\n");
+            // printf("BISHOP4\n");
             return true;
         }
     }
@@ -870,7 +868,7 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
         if ((board[u][kingCol].getType() == 4 && board[u][kingCol].getSide() != this->side) || (board[u][kingCol].getType() == 5 && board[u][kingCol].getSide() != this->side)){
             board[oldrow][oldcol].UpdatePiece(oldtype, oldside, oldvalue, oldrow, oldcol, oldmoves, oldtotMoves);
             board[row][col].UpdatePiece(storedType, storedSide, storedValue, row, col, storedMoves, storedtotMoves);
-            printf("ROOK1\n");
+            // printf("ROOK1\n");
             return true;
         }
     }
@@ -883,7 +881,7 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
         if ((board[d][kingCol].getType() == 4 && board[d][kingCol].getSide() != this->side) || (board[d][kingCol].getType() == 5 && board[d][kingCol].getSide() != this->side)){
             board[oldrow][oldcol].UpdatePiece(oldtype, oldside, oldvalue, oldrow, oldcol, oldmoves, oldtotMoves);
             board[row][col].UpdatePiece(storedType, storedSide, storedValue, row, col, storedMoves, storedtotMoves);
-            printf("ROOK2\n");
+            // printf("ROOK2\n");
             return true;
         }
     }
@@ -896,7 +894,7 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
         if ((board[kingRow][r].getType() == 4 && board[kingRow][r].getSide() != this->side) || (board[kingRow][r].getType() == 5 && board[kingRow][r].getSide() != this->side)){
             board[oldrow][oldcol].UpdatePiece(oldtype, oldside, oldvalue, oldrow, oldcol, oldmoves, oldtotMoves);
             board[row][col].UpdatePiece(storedType, storedSide, storedValue, row, col, storedMoves, storedtotMoves);
-            printf("ROOK3\n");
+            // printf("ROOK3\n");
             return true;
         }
     }
@@ -909,7 +907,7 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
         if ((board[kingRow][l].getType() == 4 && board[kingRow][l].getSide() != this->side) || (board[kingRow][l].getType() == 5 && board[kingRow][l].getSide() != this->side)){
             board[oldrow][oldcol].UpdatePiece(oldtype, oldside, oldvalue, oldrow, oldcol, oldmoves, oldtotMoves);
             board[row][col].UpdatePiece(storedType, storedSide, storedValue, row, col, storedMoves, storedtotMoves);
-            printf("ROOK4\n");
+            // printf("ROOK4\n");
             return true;
         }
     }
@@ -919,7 +917,7 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
         if (board[kingRow - 2][kingCol + 1].getType() == 3 && board[kingRow - 2][kingCol + 1].getSide() != this->side){
             board[oldrow][oldcol].UpdatePiece(oldtype, oldside, oldvalue, oldrow, oldcol, oldmoves, oldtotMoves);
             board[row][col].UpdatePiece(storedType, storedSide, storedValue, row, col, storedMoves, storedtotMoves);
-            printf("KNIGHT1\n");
+            // printf("KNIGHT1\n");
             return true;
         }
     }
@@ -927,7 +925,7 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
         if (board[kingRow - 1][kingCol + 2].getType() == 3 && board[kingRow - 1][kingCol + 2].getSide() != this->side){
             board[oldrow][oldcol].UpdatePiece(oldtype, oldside, oldvalue, oldrow, oldcol, oldmoves, oldtotMoves);
             board[row][col].UpdatePiece(storedType, storedSide, storedValue, row, col, storedMoves, storedtotMoves);
-            printf("KNIGHT2\n");
+            // printf("KNIGHT2\n");
             return true;
         }
     }
@@ -936,7 +934,7 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
         if (board[kingRow - 2][kingCol - 1].getType() == 3 && board[kingRow - 2][kingCol - 1].getSide() != this->side){
             board[oldrow][oldcol].UpdatePiece(oldtype, oldside, oldvalue, oldrow, oldcol, oldmoves, oldtotMoves);
             board[row][col].UpdatePiece(storedType, storedSide, storedValue, row, col, storedMoves, storedtotMoves);
-            printf("KNIGHT3\n");
+            // printf("KNIGHT3\n");
             return true;
         }
     }
@@ -944,7 +942,7 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
         if (board[kingRow - 1][kingCol - 2].getType() == 3 && board[kingRow - 1][kingCol - 2].getSide() != this->side){
             board[oldrow][oldcol].UpdatePiece(oldtype, oldside, oldvalue, oldrow, oldcol, oldmoves, oldtotMoves);
             board[row][col].UpdatePiece(storedType, storedSide, storedValue, row, col, storedMoves, storedtotMoves);
-            printf("KNIGHT4\n");
+            // printf("KNIGHT4\n");
             return true;
         }
     }
@@ -953,7 +951,7 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
         if (board[kingRow + 1][kingCol - 2].getType() == 3 && board[kingRow + 1][kingCol - 2].getSide() != this->side){
             board[oldrow][oldcol].UpdatePiece(oldtype, oldside, oldvalue, oldrow, oldcol, oldmoves, oldtotMoves);
             board[row][col].UpdatePiece(storedType, storedSide, storedValue, row, col, storedMoves, storedtotMoves);
-            printf("KNIGHT5\n");
+            // printf("KNIGHT5\n");
             return true;
         }
     }
@@ -961,7 +959,7 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
         if (board[kingRow + 2][kingCol - 1].getType() == 3 && board[kingRow + 2][kingCol - 1].getSide() != this->side){
             board[oldrow][oldcol].UpdatePiece(oldtype, oldside, oldvalue, oldrow, oldcol, oldmoves, oldtotMoves);
             board[row][col].UpdatePiece(storedType, storedSide, storedValue, row, col, storedMoves, storedtotMoves);
-            printf("KNIGHT6\n");
+            // printf("KNIGHT6\n");
             return true;
         }
     }
@@ -970,7 +968,7 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
         if (board[kingRow + 2][kingCol + 1].getType() == 3 && board[kingRow + 2][kingCol + 1].getSide() != this->side){
             board[oldrow][oldcol].UpdatePiece(oldtype, oldside, oldvalue, oldrow, oldcol, oldmoves, oldtotMoves);
             board[row][col].UpdatePiece(storedType, storedSide, storedValue, row, col, storedMoves, storedtotMoves);
-            printf("KNIGHT7\n");
+            // printf("KNIGHT7\n");
             return true;
         }
     }
@@ -978,7 +976,7 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
         if (board[kingRow + 1][kingCol + 2].getType() == 3 && board[kingRow + 1][kingCol + 2].getSide() != this->side){
             board[oldrow][oldcol].UpdatePiece(oldtype, oldside, oldvalue, oldrow, oldcol, oldmoves, oldtotMoves);
             board[row][col].UpdatePiece(storedType, storedSide, storedValue, row, col, storedMoves, storedtotMoves);
-            printf("KNIGHT8\n");
+            // printf("KNIGHT8\n");
             return true;
         }
     }
