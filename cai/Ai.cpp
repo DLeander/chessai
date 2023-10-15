@@ -9,39 +9,55 @@
 
 int counter;
 
-int getTotalMaterial(Piece** board){
+int getTotalMaterial(Piece** board, int currentSide){
     int totMaterial = 0;
     for (int row = 0; row < 8; row++){
         for (int col = 0; col < 8; col++){
-            if (board[row][col].getType() != -1){
-                totMaterial = totMaterial + board[row][col].getValue();
+            int type = board[row][col].getType();
+            int side = board[row][col].getSide();
+            if (type != -1 && side == currentSide){
+                if (type == 6){
+                    totMaterial = totMaterial + board[row][col].getValue()*100;
+                }
+                else{
+                    totMaterial = totMaterial + board[row][col].getValue()*10;
+                }
             }
         }
     }
-    printf("TOTMATERIAL: %d\n", totMaterial);
     return totMaterial;
 }
 
-// Return the material difference for the current side (Material value is the current heuristic)
-int evaluateHeuristic(Board* chessboard, int maxSide) {
-    int materialScore = getTotalMaterial(chessboard->getBoard());
-    // printf("MATERIAL SCORE: %d\n", materialScore);
-    return materialScore;
+int evaluateHeuristic(Piece** board, int maxSide, int currentSide) {
+    // Initialize player and opponent's total material values
+    int player_material = getTotalMaterial(board, maxSide);
+    int opponent_material = getTotalMaterial(board, !maxSide);
+
+    int material_advantage = 0;
+    if (currentSide == maxSide){
+        // Maximize side wants this as high as possible.
+        material_advantage = player_material - opponent_material;
+    }
+    else{
+        // Minimize side wants this as low as possible.
+        material_advantage = opponent_material - player_material;
+    }
+    return material_advantage;
 }
 
 // Search here that evaluates heuristic. In findBestMove this will replace the bestMove variable but only if its the maximize side.
 std::tuple <Coordinate, Coordinate, int> Search(Board* chessboard, Piece** board, int depth, bool currentSide, bool maxSide, int alpha, int beta){
     counter++;
     if (depth == 0){
-        int heuristic = evaluateHeuristic(chessboard, maxSide);
+        int heuristic = evaluateHeuristic(board, maxSide, currentSide);
         return {{-1, -1}, {-1, -1}, heuristic};
     }
 
-    std::tuple <Coordinate,Coordinate, int> bestMove = {{-1, -1}, {-1, -1}, 0};
+    // Initialize the best move as the worst possible move for the maximizing side.
+    // +1 as the final argument to make sure the integer does not overflow and cause trouble when evaluating.
+    std::tuple <Coordinate,Coordinate, int> bestMove = {{-1, -1}, {-1, -1}, std::numeric_limits<int>::min()+1};
 
     if (currentSide == maxSide){
-        int maxEval = std::numeric_limits<int>::min();
-        // std::tuple <Coordinate,Coordinate, int> bestMove = {{-1, -1}, {-1, -1}, std::numeric_limits<int>::min()};
         for (int row = 0; row < 8; row++){
             for (int col = 0; col < 8; col++){
                 // Go through each piece and look through all moves to find optimal one.
@@ -55,24 +71,21 @@ std::tuple <Coordinate, Coordinate, int> Search(Board* chessboard, Piece** board
                         Coordinate moveFrom= {col, row};
                         Move* pos_move = new Move(row, col, move.y, move.x);
                         pos_move->applyMove(chessboard, 0, currentSide);
-
                         std::tuple<Coordinate, Coordinate, int> eval = Search(chessboard, board, depth-1, !currentSide, maxSide, alpha, beta);
 
                         pos_move->undoMove(chessboard, selectedPiece, capturedPiece);
                         delete pos_move;
                         
                         int evalHeuristic = std::get<2>(eval);
-                        if (evalHeuristic > maxEval){
-                            // printf("\nMAXEVALBEFORE: %d\n", maxEval);
-                            maxEval = evalHeuristic;
-                            // printf("MAXEVALAFTER: %d\n", maxEval);
+                        if (evalHeuristic >= alpha){
+                            alpha = evalHeuristic;
                             std::get<0>(bestMove) = moveFrom; // Piece starting position.
-                            std::get<1>(bestMove) = move; // Piece end position.
-                            std::get<2>(bestMove) = maxEval; // Heuristic of that move.
+                            std::get<1>(bestMove) = move;     // Piece end position.
+                            std::get<2>(bestMove) = alpha;    // Heuristic of that move.
                         }
-                        // if (alpha >=beta){
-                        //     break;
-                        // }
+                        if (alpha >=beta){
+                            break;
+                        }
                     }
                 }
             }
@@ -80,8 +93,6 @@ std::tuple <Coordinate, Coordinate, int> Search(Board* chessboard, Piece** board
         return bestMove;
     }
     else{
-        int minEval = std::numeric_limits<int>::max();
-        // std::tuple <Coordinate,Coordinate, int> bestMove = {{-1, -1}, {-1, -1}, minEval};
         for (int row = 0; row < 8; row++){
             for(int col = 0; col < 8; col++){
                 Piece piece = board[row][col];
@@ -93,7 +104,6 @@ std::tuple <Coordinate, Coordinate, int> Search(Board* chessboard, Piece** board
                         Coordinate moveFrom= {col, row};
                         Move* pos_move = new Move(row, col, move.y, move.x);
                         pos_move->applyMove(chessboard, 0, currentSide);
-
                         std::tuple<Coordinate, Coordinate, int> eval = Search(chessboard, board, depth-1, !currentSide, maxSide, alpha, beta);
 
                         pos_move->undoMove(chessboard, selectedPiece, capturedPiece);
@@ -101,16 +111,15 @@ std::tuple <Coordinate, Coordinate, int> Search(Board* chessboard, Piece** board
 
                         // To minimize, negate the heuristic of the move.
                         int evalHeuristic = -std::get<2>(eval);
-                        if (evalHeuristic < minEval){
-                            minEval = evalHeuristic;
-                            // printf("MIN!!!!EVAL: %d\n", minEval);
+                        if (evalHeuristic < beta){
+                            beta = evalHeuristic;
                             std::get<0>(bestMove) = moveFrom; // Piece starting position.
                             std::get<1>(bestMove) = move; // Piece end position.
-                            std::get<2>(bestMove) = minEval; // Heuristic of that move.
+                            std::get<2>(bestMove) = beta; // Heuristic of that move.
                         }
-                        // if (alpha >= beta){
-                        //     break;
-                        // }
+                        if (alpha >= beta){
+                            break;
+                        }
                     }
                 }
             }
