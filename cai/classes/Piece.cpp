@@ -130,7 +130,7 @@ void Piece::pawnMoves(Piece** board, Coordinate wKingPos, Coordinate bKingPos){
                 continue;
             }
             // Look for en passant move.
-            if (col != x && !(board[y][col].isPiece()) && board[y+1][col].getType() == 1 && board[y+1][col].getSide() != this->side){
+            if (col != x && !(board[y][col].isPiece()) && board[y+1][col].getTotMoves() == 1 && y+1 == 3 && board[y+1][col].getType() == 1 && board[y+1][col].getSide() != this->side){
                 Coordinate cord;
                 cord.x = col;
                 cord.y = y;
@@ -194,7 +194,7 @@ void Piece::pawnMoves(Piece** board, Coordinate wKingPos, Coordinate bKingPos){
             }
 
             // Look for en passant move.
-            if (col != x && !(board[y][col].isPiece()) && board[y-1][col].getType() == 1 && board[y-1][col].getSide() != this->side){
+            if (col != x && !(board[y][col].isPiece()) && board[y-1][col].getTotMoves() == 1 && y-1 == 4 && board[y-1][col].getType() == 1 && board[y-1][col].getSide() != this->side){
                 Coordinate cord;
                 cord.x = col;
                 cord.y = y;

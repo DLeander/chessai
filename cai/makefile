@@ -1,10 +1,10 @@
 all: chess test
 
 chess: main.cpp classes/*.cpp Ai.cpp
-	g++ -g main.cpp classes/*.cpp Ai.cpp -o chess
+	g++ -g -std=c++11 main.cpp classes/*.cpp Ai.cpp -o chess
 
 test: test.cpp classes/*.cpp Ai.cpp
-	g++ -g test.cpp classes/*.cpp Ai.cpp -o test
+	g++ -g -std=c++11 test.cpp classes/*.cpp Ai.cpp -o test
 
 clean:
 	rm -f chess test

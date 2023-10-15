@@ -19,7 +19,7 @@ int getSideHeuristic(Piece** board, int currentSide){
             if (type != -1 && side == currentSide){
                 int squareTableVal;
                 // "Mobility"-heuristic (The number of available moves for the piece.)
-                
+
                 switch (type){
                     // Scale up all pieces by 100 to make sure that piece table is not dominant.
                     case 1:
