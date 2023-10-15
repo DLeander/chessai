@@ -46,8 +46,6 @@ void test_undo_moves(){
 
     // Test castle undo.
     emptyBoard(board);
-    // board[0][4].UpdatePiece(6, 0, 9, 0, 4, moves, 1);
-    // board[0][7].UpdatePiece(4, 0, 5, 0, 7, moves, 1);
     board[0][4].UpdatePiece(6, 0, 9, 0, 4, moves, 0);
     board[0][7].UpdatePiece(4, 0, 5, 0, 7, moves, 0);
     selectedPiece = board[0][7];
@@ -215,9 +213,7 @@ void ai_test_number_of_nodes(){
 
     std::tuple<Coordinate,Coordinate, int> selected_move = findBestMove(chessboard, board, 4, 1);
     Move* move = new Move(std::get<0>(selected_move).y, std::get<0>(selected_move).x, std::get<1>(selected_move).y, std::get<1>(selected_move).x);
-    chessboard->printBoard();
     move->applyMove(chessboard, 0, 1);
-    chessboard->printBoard();
     delete move;
     delete chessboard;
     printf("Test 'Test Number of Nodes' was successful.\n");
