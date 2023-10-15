@@ -228,6 +228,7 @@ bool Move::applyMove(Board* chessboard, int transformTo, int currentSide){
             board[end_row][end_col].UpdatePiece(type, side, value, end_row, end_col, moves, totMoves++);
         }
     }
+
     return true;
 }
 
@@ -251,6 +252,7 @@ bool Move::isEnPassantMove(Piece** board, Piece piece, int starty, int startx, i
 // There are no pieces between the king and the rook.
 // The king is not currently in check.
 // The king does not pass through or finish on a square that is attacked by an enemy piece.
+// If these conditions are met, then isCastleMove returns true.
 bool Move::isCastleMove(Piece** board, Piece piece, int starty, int startx, int endy, int endx){
     // If it is an available move and the current piece is a rook, with the destination being a tower, then
     // castle.
@@ -271,7 +273,6 @@ bool Move::isValidMove(std::vector<Coordinate> moves, int end_row, int end_col){
             valid = true;
             break;
         }
-        // printf("MOVE X:%d Y:%d\nINPUT X:%d Y:%d\n", moves[i].x, moves[i].y, end_col, end_row);
         valid = false;
     }
     for (Coordinate move : moves){

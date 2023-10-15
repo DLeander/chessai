@@ -7,10 +7,29 @@
 #include <limits>
 #include <tuple>
 #include <cmath>
+#include <algorithm> 
 
 int counter;
 
-int getSideHeuristic(Piece** board, int currentSide){
+bool compareMoves(Piece** board, int row, int col, const Coordinate move1, const Coordinate move2) {
+    // Implement your comparison logic here
+    // Compare move1 and move2 based on the given board, row, and col.
+    int diff1 = board[move1.y][move1.x].getValue() - board[row][col].getValue();
+    int diff2 = board[move2.y][move2.x].getValue() - board[row][col].getValue();
+
+    return diff1 < diff2;
+}
+
+std::vector<Coordinate> orderMoves(Piece** board, int row, int col, std::vector<Coordinate> moves) {
+    // Sort the moves in order of difference in value between captured pieces to reduce alpha beta pruning.
+    std::sort(moves.begin(), moves.end(), [board, row, col](const Coordinate& move1, const Coordinate& move2) {
+        return compareMoves(board, row, col, move1, move2);
+    });
+
+    return moves;
+}
+
+int getSideHeuristic(Board* chessboard, Piece** board, int currentSide){
     int totMaterial = 0;
     for (int row = 0; row < 8; row++){
         for (int col = 0; col < 8; col++){
@@ -18,6 +37,10 @@ int getSideHeuristic(Piece** board, int currentSide){
             int side = board[row][col].getSide();
             if (type != -1 && side == currentSide){
                 int squareTableVal;
+                board[row][col].getAvailableMoves(board, chessboard->getwKingPos(), chessboard->getbKingPos());
+                std::vector<Coordinate> moves = board[row][col].getMoves();
+
+                // TODO!
                 // "Mobility"-heuristic (The number of available moves for the piece.)
 
                 switch (type){
@@ -90,10 +113,11 @@ int getSideHeuristic(Piece** board, int currentSide){
     return totMaterial;
 }
 
-int evaluateHeuristic(Piece** board, int maxSide, int currentSide) {
+// Heuristic function: Difference in material+Piece Square Table value (See headers/PieceSquareTables.h)
+int evaluateHeuristic(Board* chessboard, Piece** board, int maxSide, int currentSide) {
     // Initialize player and opponent's total material values
-    int player_material = getSideHeuristic(board, maxSide);
-    int opponent_material = getSideHeuristic(board, !maxSide);
+    int player_material = getSideHeuristic(chessboard, board, maxSide);
+    int opponent_material = getSideHeuristic(chessboard, board, !maxSide);
 
     int material_advantage = 0;
     if (currentSide == maxSide){
@@ -111,15 +135,15 @@ int evaluateHeuristic(Piece** board, int maxSide, int currentSide) {
 std::tuple <Coordinate, Coordinate, int> Search(Board* chessboard, Piece** board, int depth, bool currentSide, bool maxSide, int alpha, int beta){
     counter++;
     if (depth == 0){
-        int heuristic = evaluateHeuristic(board, maxSide, currentSide);
+        // If leaf, return the heuristic.
+        int heuristic = evaluateHeuristic(chessboard, board, maxSide, currentSide);
         return {{-1, -1}, {-1, -1}, heuristic};
     }
 
-    // Initialize the best move as the worst possible move for the maximizing side.
-    // +1 to the final argument to prevent integer overflow
-    std::tuple <Coordinate,Coordinate, int> bestMove = {{-1, -1}, {-1, -1}, std::numeric_limits<int>::min()+1};
-
     if (currentSide == maxSide){
+        // Initialize the best move as the worst possible move for the maximizing side.
+        // +1 to the final argument to prevent integer overflow
+        std::tuple <Coordinate,Coordinate, int> bestMove = {{-1, -1}, {-1, -1}, std::numeric_limits<int>::min()+1};
         for (int row = 0; row < 8; row++){
             for (int col = 0; col < 8; col++){
                 // Go through each piece and look through all moves to find optimal one.
@@ -127,10 +151,12 @@ std::tuple <Coordinate, Coordinate, int> Search(Board* chessboard, Piece** board
                 if (piece.getSide() == currentSide){
                     // Generate all possible moves for current piece.
                     piece.getAvailableMoves(board, chessboard->getwKingPos(), chessboard->getbKingPos());
-                    for (Coordinate move : piece.getMoves()){
+                    std::vector<Coordinate> moves = piece.getMoves();
+                    moves = orderMoves(board, row, col, moves);
+                    Coordinate moveFrom= {col, row};
+                    for (Coordinate move : moves){
                         Piece selectedPiece = piece;
                         Piece capturedPiece = board[move.y][move.x];
-                        Coordinate moveFrom= {col, row};
                         Move* pos_move = new Move(row, col, move.y, move.x);
 
                         // There should be some logic here abuot promotion of pawns, currently it will always be promoted to a Queen.
@@ -156,12 +182,16 @@ std::tuple <Coordinate, Coordinate, int> Search(Board* chessboard, Piece** board
         return bestMove;
     }
     else{
+        // Initialize the best move as the worst possible move for the minimizing side.
+        // -1 to the final argument to prevent integer overflow
+        std::tuple <Coordinate,Coordinate, int> bestMove = {{-1, -1}, {-1, -1}, std::numeric_limits<int>::max()-1};
         for (int row = 0; row < 8; row++){
             for(int col = 0; col < 8; col++){
                 Piece piece = board[row][col];
                 if (piece.getSide() == currentSide){
                     piece.getAvailableMoves(board, chessboard->getwKingPos(), chessboard->getbKingPos());
-                    for (Coordinate move : piece.getMoves()){
+                    std::vector<Coordinate> moves = piece.getMoves();
+                    for (Coordinate move : moves){
                         Piece selectedPiece = piece;
                         Piece capturedPiece = board[move.y][move.x];
                         Coordinate moveFrom= {col, row};
@@ -192,12 +222,15 @@ std::tuple <Coordinate, Coordinate, int> Search(Board* chessboard, Piece** board
     }
 }
 
-// Piece start, Piece end, heuristic.
+// (Piece start, Piece end, heuristic) is returned.
 std::tuple <Coordinate, Coordinate, int> findBestMove(Board* chessboard, Piece** board, int depth, bool maxSide){
+    // Counter is the number of nodes (Incremented each time a recursive call is made.)
     counter = 0;
+    // Initialize alpha and beta.
     int minInt = std::numeric_limits<int>::min();
     int maxInt = std::numeric_limits<int>::max();
+    // Look for best move.
     auto bestMove = Search(chessboard, chessboard->getBoard(), depth, maxSide, maxSide, minInt, maxInt);
-    printf("COUNTER: %d\n", counter);
+    printf("Number of Nodes created: %d\n", counter);
     return bestMove;
 }

@@ -24,8 +24,8 @@ Board::Board() {
     this->blackMaterial = 45;
 
     // Check is not possible from the start.
-    this->bCheck = false;
-    this->wCheck = false;
+    this->blackNumChecks = false;
+    this->whiteNumChecks = false;
 
     bKingPos.x = 4;
     bKingPos.y = 0;
@@ -36,12 +36,12 @@ Board::Board() {
     populateBoard();
 }
 
-Board::~Board(){
+Board::~Board() {
     // Deallocate the board
     for (int i = 0; i < 8; ++i) {
-        delete[] board[i];
+        delete[] this->board[i]; // Deallocate the array of pointers (rows)
     }
-    delete[] board;
+    delete[] this->board; // Deallocate the array of pointers to pointers
 }
 
 void Board::updateKingPos(Coordinate newPos, int side){
@@ -65,6 +65,26 @@ void Board::setScore(bool team, int score){
     }
     else{
         this->blackScore += score;
+    }
+}
+
+bool Board::isCheckedSide(bool side){
+    if (side == 1){
+        return (this->whiteNumChecks > 0);
+    }
+    else if (side == 0){
+        return (this->blackNumChecks > 0);
+    }
+
+    return false;
+}
+
+void Board::changeNumChecks(int i, int side){
+    if (side == 1){
+        this->whiteNumChecks = this->whiteNumChecks + 1;
+    }
+    else if (side == 0){
+        this->blackNumChecks = this->blackNumChecks + 1;
     }
 }
 
@@ -142,50 +162,13 @@ void Board::showAvailableMoves(int y, int x){
     }
 }
 
-// Print the current board.
-// void Board::printBoard() {
-//     // Go through each tile, pieces are represented by their number, empty tiles are marked '-'.
-//     for (int row = 0; row <= 8; row++){
-//         if (row == 8){
-//             printf("    a     b     c     d     e     f     g     h\n");
-//         }
-//         else{
-//             for (int col = 0; col < 9; col++){
-//                 if (col == 0){
-//                     printf("%d ", row+1);
-//                 }
-//                 else{
-//                     Piece piece = this->board[row][col-1];
-//                     if (piece.isPiece()){
-//                         printf("[");
-//                         piece.printPiece();
-//                         printf("]");
-//                     }
-//                     else{
-//                         printf("[ -- ]");
-//                     }
-//                 }
-//             }
-//             if (row == 2){
-//                 printf("   Black Score: %d", this->blackScore);
-//             }
-//             if (row == 5){
-//                 printf("   White Score: %d", this->whiteScore);
-//             }
-//             printf("\n");
-//         }
-
-//     }
-//     printf("\n");
-// }
 void Board::printBoard(){
+    // Refresh the terminal to only include the board.
     std::cout<< u8"\033[2J\033[1;1H";
     for (int row = 0; row < 8; row++){
         for (int lineNum = 1; lineNum < 7;  lineNum++){
-            // if (lineNum == 4){ printf("%d", row+1); }
             for (int col = 0; col < 8; col++){
                 std::string pieceLine;
-                // printf("%d",lineNum);
                 switch (lineNum){
                     case 1:
                         pieceLine = board[row][col].getLine1();
@@ -210,6 +193,5 @@ void Board::printBoard(){
             }
             printf("\n");
         }
-        // printf("\n");
     }
 }

@@ -3,6 +3,12 @@
 // #include "Move.h"
 #include "Piece.h"
 
+struct CheckInfo {
+    bool isCheck;  // true if the king is in check, false otherwise.
+    int x;  // row of the piece causing the check, -1 if not check.
+    int y;  // column of the piece causing the check, -1 if not check.
+};
+
 class Piece;
 
 class Board {
@@ -15,17 +21,21 @@ public:
     void populateBoard();
     void printBoard();
     void showAvailableMoves(int x, int y);
-    std::string getAlignedPieceLine(int row, int col, int line, int cellWidth);
 
     // Getters
     Coordinate getbKingPos();
     Coordinate getwKingPos();
+    // Unused
     int getMaterial(int side);
+    // Unused
+    bool isCheckedSide(bool side);
 
     // Setters
     void setScore(bool side, int score);
     void updateKingPos(Coordinate newPos, int side);
+    // Unused
     void setMaterial(int side, int value);
+    void changeNumChecks(int i, int side);
 
 private:
     // The chessboard.
@@ -36,11 +46,15 @@ private:
     // The current score of the black side.
     int blackScore;
 
-    bool bCheck;
-    bool wCheck;
+    // If this value is larger than 0, then there is a check.
+    int blackNumChecks;
+    int whiteNumChecks;
+
+    // The current coordinate of the king for each side.
     Coordinate bKingPos;
     Coordinate wKingPos;
     
+    // Material for the current side (Unused)
     int whiteMaterial;
     int blackMaterial;
 };

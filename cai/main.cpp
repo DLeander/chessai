@@ -1,52 +1,67 @@
 #include <iostream>
-#include<tuple>
+#include <tuple>
+#include <limits>
 #include "headers/Piece.h"
 #include "headers/Move.h"
 #include "headers/Board.h"
 #include "headers/Ai.h"
 
-// Returns true if side has no possible moves.
-bool isCheckmate(Piece** board, int side, Coordinate wk, Coordinate bk){
-    for (int i = 0; i < 8; i++){
-        for (int j = 0; j < 8; j++){
-            if (board[i][j].getSide() == side){
-                board[i][j].getAvailableMoves(board, wk, bk);
-                // printf("ola?\n");
-                std::vector<Coordinate> moves = board[i][j].getMoves();
-                if (moves.size() > 0){
-                    return false;
-                }
-            }
-        }
-    }
-    return true;
-}
-
+// Simple game loop to play the game.
 void GameLoop(Board* chessboard, int level){
     // The infinite game loop until checkmate is reached.
     int side = 1;
     Piece** board = chessboard->getBoard();
+    int depth;
+    std::cout << "Choose the search depth (3 works just fine): ";
+    std::cin >> depth;
 
+    int x_start, y_start, x_end, y_end;
+    int promotion = 0;
+
+    std::cin.clear();
     while (true){
-        // if (!isCheckmate(board, side, chessboard->getwKingPos(), chessboard->getbKingPos())){
-        //     std::cout<< u8"\033[2J\033[1;1H";
-        //     printf("\nCheckmate. Side %d won.\n", side);
-        //     break;
-        // }
         chessboard->printBoard();
 
         // White plays.
-        int x_start, y_start, x_end, y_end;
-        int promotion = 0;
+
+        promotion = 0;
+        x_start = 0;
+        y_start = 0;
+        x_end = 0;
+        y_end = 0;
+
         if (side == 1){
             printf("Playing as white.\n");
             std::cout << "Select piece (y x): ";
-            std::cin >> y_start >> x_start;
+            // If non interger is entered.
+            if (!(std::cin >> y_start >> x_start)) {
+                // Input failed, clear error state and consume the bad input.
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                continue;
+            }
             
+            // If wrong move is entered.
+            if (y_start > 7 || x_start > 7 || y_start < 0 || x_start < 0){
+                continue;
+            }
+
+            // Show the available moves to the player.
             chessboard->showAvailableMoves(y_start, x_start);
 
             std::cout << "Select destination (y x): ";
-            std::cin >> y_end >> x_end;
+            // If non interger is entered.
+            if (!(std::cin >> y_end >> x_end)) {
+                // Input failed, clear error state and consume the bad input.
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                continue;
+            }
+
+            // If wrong move is entered.
+            if (y_end > 7 || x_end > 7 || y_end < 0 || x_end < 0){
+                continue;
+            }
 
             // If pawn is moving to top/bottom of board, ask what to promote it to.
             if (board[y_start][x_start].getType() == 1 && (y_end == 0 || y_end == 7)){
@@ -56,7 +71,7 @@ void GameLoop(Board* chessboard, int level){
         }
         else{
             printf("Playing as black.\n");
-            std::tuple <Coordinate, Coordinate, int> result = findBestMove(chessboard, board, 3, 0);
+            std::tuple <Coordinate, Coordinate, int> result = findBestMove(chessboard, board, depth, side);
             y_start = std::get<0>(result).y;
             x_start = std::get<0>(result).x;
             y_end = std::get<1>(result).y;
@@ -82,7 +97,6 @@ void GameLoop(Board* chessboard, int level){
             side = 1;
         }
     }
-
 }
 
 int main() {

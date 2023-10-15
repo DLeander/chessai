@@ -12,6 +12,7 @@ Piece::Piece() {
     this->xpos        = -1;
     this->ypos        = -1;
     this->totMoves    = 0;
+    this->checks      = false;
     printEmptyTile();
 }
 
@@ -464,8 +465,9 @@ void Piece::rookMoves(Piece** board, Coordinate wKingPos, Coordinate bKingPos){
     int y = this->ypos;
 
 
+
     // Check for castle move to the left.
-    if (this->totMoves == 0 && !board[y][x-1].isPiece() && !board[y][x-2].isPiece() && board[y][x-3].getType() == 6 && board[y][x-3].getTotMoves() == 0){
+    if ((x == 7 && (y == 7 || y == 0)) && this->totMoves == 0 && !board[y][x-1].isPiece() && !board[y][x-2].isPiece() && board[y][x-3].getType() == 6 && board[y][x-3].getTotMoves() == 0){
         Coordinate pos1;
         Coordinate pos2;
         pos1.x = x-1;
@@ -487,7 +489,7 @@ void Piece::rookMoves(Piece** board, Coordinate wKingPos, Coordinate bKingPos){
         }
     }
     // Check for castle move to the right.
-    if (this->totMoves == 0 && !board[y][x+1].isPiece() && !board[y][x+2].isPiece() && !board[y][x+3].isPiece() && board[y][x+4].getType() == 6 && board[y][x+4].getTotMoves() == 0){
+    if ((x == 0 && (y == 7 || y == 0)) && this->totMoves == 0 && !board[y][x+1].isPiece() && !board[y][x+2].isPiece() && !board[y][x+3].isPiece() && board[y][x+4].getType() == 6 && board[y][x+4].getTotMoves() == 0){
         Coordinate pos1;
         Coordinate pos2;
         Coordinate pos3;
@@ -994,7 +996,7 @@ bool Piece::isCheckedTiles(Piece** board, Coordinate possible_location, Coordina
             if (board[i][j].getType() == 6 && board[i][j].getSide() != this->side){
                 board[oldrow][oldcol].UpdatePiece(oldtype, oldside, oldvalue, oldrow, oldcol, oldmoves, oldtotMoves);
                 board[row][col].UpdatePiece(storedType, storedSide, storedValue, row, col, storedMoves, storedtotMoves);
-                printf("KING.\n");
+                // printf("KING.\n");
                 return true;
             }
         }
@@ -1189,6 +1191,12 @@ int Piece::getTotMoves(){
 }
 std::vector<Coordinate> Piece::getMoves(){
     return this->moves;
+}
+bool Piece::isChecker(){
+    return this->checks;
+}
+void Piece::setChecks(bool checks){
+    this->checks = checks;
 }
 void Piece::setType(int type){
     this->type = type;

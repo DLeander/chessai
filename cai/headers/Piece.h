@@ -35,7 +35,10 @@ public:
     int getValue();
     int getXpos();
     int getYpos();
+    // Unused.
+    bool isChecker();
     std::vector<Coordinate> getMoves();
+    // Lines used for printing the board.
     std::string getLine1();
     std::string getLine2();
     std::string getLine3();
@@ -47,6 +50,7 @@ public:
     // Setters
     void setType(int type);
     void increaseTotMoves();
+    void setChecks(bool checks);
 
 private:
     // The side the piece belongs to (Black/White - 0/1).
@@ -59,6 +63,8 @@ private:
     int xpos;
     // The y position on the board.
     int ypos;
+    // If the piece is causing a check.
+    bool checks;
 
     // The number of moves done by the piece.
     int totMoves;
