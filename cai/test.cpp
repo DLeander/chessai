@@ -133,22 +133,22 @@ void ai_test_no_heuristic_gain(){
     std::vector<Coordinate> moves;
     emptyBoard(board);
 
-    // board[0][0].UpdatePiece(1, 0, 1, 6, 4, moves, 0);
-    // board[0][1].UpdatePiece(1, 0, 1, 6, 4, moves, 0);
-    // board[1][0].UpdatePiece(1, 0, 1, 6, 4, moves, 0);
+    board[0][0].UpdatePiece(1, 0, 1, 6, 4, moves, 0);
+    board[0][1].UpdatePiece(1, 0, 1, 6, 4, moves, 0);
+    board[1][0].UpdatePiece(1, 0, 1, 6, 4, moves, 0);
 
-    // board[6][2].UpdatePiece(1, 1, 1, 6, 2, moves, 0);
+    board[6][2].UpdatePiece(1, 1, 1, 6, 2, moves, 0);
 
     board[1][4].UpdatePiece(1, 0, 1, 1, 4, moves, 0);
     board[6][4].UpdatePiece(1, 1, 1, 6, 4, moves, 0);
-    // chessboard->printBoard();
+    chessboard->printBoard();
 
     std::tuple<Coordinate,Coordinate, int> selected_move = findBestMove(chessboard, board, 3, 1);
     Move* move = new Move(std::get<0>(selected_move).y, std::get<0>(selected_move).x, std::get<1>(selected_move).y, std::get<1>(selected_move).x);
     move->applyMove(chessboard, 0, 1);
     printf("THE MOVE HEURISTIC: %d\n", std::get<2>(selected_move));
 
-    // chessboard->printBoard();
+    chessboard->printBoard();
 
     printf("Test 'No Heuristic Gain' was successful.\n");
 }

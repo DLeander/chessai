@@ -1,6 +1,7 @@
 #include "headers/Ai.h"
 #include "headers/Board.h"
 #include "headers/Piece.h"
+#include "headers/PieceSquareTables.h"
 #include <iostream>
 #include <vector>
 #include <limits>
@@ -9,18 +10,79 @@
 
 int counter;
 
-int getTotalMaterial(Piece** board, int currentSide){
+int getSideHeuristic(Piece** board, int currentSide){
     int totMaterial = 0;
     for (int row = 0; row < 8; row++){
         for (int col = 0; col < 8; col++){
             int type = board[row][col].getType();
             int side = board[row][col].getSide();
             if (type != -1 && side == currentSide){
-                if (type == 6){
-                    totMaterial = totMaterial + board[row][col].getValue()*100;
-                }
-                else{
-                    totMaterial = totMaterial + board[row][col].getValue()*10;
+                int squareTableVal;
+                // "Mobility"-heuristic (The number of available moves for the piece.)
+                
+                switch (type){
+                    // Scale up all pieces by 100 to make sure that piece table is not dominant.
+                    case 1:
+                    // Pawn
+                        if (currentSide == 0){
+                            squareTableVal = BlackPawnSquareTable[row][col];
+                        }
+                        else{
+                            squareTableVal = WhitePawnSquareTable[row][col];
+                        }
+                        totMaterial = totMaterial + board[row][col].getValue()*100 + squareTableVal;
+                        break;
+                    case 2:
+                    // Bishop
+                        if (currentSide == 0){
+                            squareTableVal = BlackBishopSquareTable[row][col];
+                        }
+                        else{
+                            squareTableVal = WhiteBishopSquareTable[row][col];
+                        }
+                        totMaterial = totMaterial + board[row][col].getValue()*100 + squareTableVal;
+                        break;
+                    case 3:
+                    // Knight
+                        if (currentSide == 0){
+                            squareTableVal = BlackKnightSquareTable[row][col];
+                        }
+                        else{
+                            squareTableVal = WhiteKnightSquareTable[row][col];
+                        }
+                        totMaterial = totMaterial + board[row][col].getValue()*100 + squareTableVal;
+                        break;
+                    case 4:
+                    // Rook
+                        if (currentSide == 0){
+                            squareTableVal = BlackRookSquareTable[row][col];
+                        }
+                        else{
+                            squareTableVal = WhiteRookSquareTable[row][col];
+                        }
+                        totMaterial = totMaterial + board[row][col].getValue()*100 + squareTableVal;
+                        break;
+                    case 5:
+                    // Queen
+                        if (currentSide == 0){
+                            squareTableVal = BlackQueenSquareTable[row][col];
+                        }
+                        else{
+                            squareTableVal = WhiteQueenSquareTable[row][col];
+                        }
+                        totMaterial = totMaterial + board[row][col].getValue()*100 + squareTableVal;
+                        break;
+                    case 6:
+                    // King
+                        // Make king desirable (scaled by 1000)
+                        if (currentSide == 0){
+                            squareTableVal = BlackKingSquareTable[row][col];
+                        }
+                        else{
+                            squareTableVal = WhiteKingSquareTable[row][col];
+                        }
+                        totMaterial = totMaterial + board[row][col].getValue()*1000 + squareTableVal;
+                        break;
                 }
             }
         }
@@ -30,8 +92,8 @@ int getTotalMaterial(Piece** board, int currentSide){
 
 int evaluateHeuristic(Piece** board, int maxSide, int currentSide) {
     // Initialize player and opponent's total material values
-    int player_material = getTotalMaterial(board, maxSide);
-    int opponent_material = getTotalMaterial(board, !maxSide);
+    int player_material = getSideHeuristic(board, maxSide);
+    int opponent_material = getSideHeuristic(board, !maxSide);
 
     int material_advantage = 0;
     if (currentSide == maxSide){
@@ -54,7 +116,7 @@ std::tuple <Coordinate, Coordinate, int> Search(Board* chessboard, Piece** board
     }
 
     // Initialize the best move as the worst possible move for the maximizing side.
-    // +1 as the final argument to make sure the integer does not overflow and cause trouble when evaluating.
+    // +1 to the final argument to prevent integer overflow
     std::tuple <Coordinate,Coordinate, int> bestMove = {{-1, -1}, {-1, -1}, std::numeric_limits<int>::min()+1};
 
     if (currentSide == maxSide){
@@ -70,9 +132,10 @@ std::tuple <Coordinate, Coordinate, int> Search(Board* chessboard, Piece** board
                         Piece capturedPiece = board[move.y][move.x];
                         Coordinate moveFrom= {col, row};
                         Move* pos_move = new Move(row, col, move.y, move.x);
-                        pos_move->applyMove(chessboard, 0, currentSide);
-                        std::tuple<Coordinate, Coordinate, int> eval = Search(chessboard, board, depth-1, !currentSide, maxSide, alpha, beta);
 
+                        // There should be some logic here abuot promotion of pawns, currently it will always be promoted to a Queen.
+                        pos_move->applyMove(chessboard, 5, currentSide);
+                        std::tuple<Coordinate, Coordinate, int> eval = Search(chessboard, board, depth-1, !currentSide, maxSide, alpha, beta);
                         pos_move->undoMove(chessboard, selectedPiece, capturedPiece);
                         delete pos_move;
                         
@@ -103,9 +166,10 @@ std::tuple <Coordinate, Coordinate, int> Search(Board* chessboard, Piece** board
                         Piece capturedPiece = board[move.y][move.x];
                         Coordinate moveFrom= {col, row};
                         Move* pos_move = new Move(row, col, move.y, move.x);
-                        pos_move->applyMove(chessboard, 0, currentSide);
-                        std::tuple<Coordinate, Coordinate, int> eval = Search(chessboard, board, depth-1, !currentSide, maxSide, alpha, beta);
 
+                        // There should be some logic here abuot promotion of pawns, currently it will always be promoted to a Queen.
+                        pos_move->applyMove(chessboard, 5, currentSide);
+                        std::tuple<Coordinate, Coordinate, int> eval = Search(chessboard, board, depth-1, !currentSide, maxSide, alpha, beta);
                         pos_move->undoMove(chessboard, selectedPiece, capturedPiece);
                         delete pos_move;
 
@@ -114,8 +178,8 @@ std::tuple <Coordinate, Coordinate, int> Search(Board* chessboard, Piece** board
                         if (evalHeuristic < beta){
                             beta = evalHeuristic;
                             std::get<0>(bestMove) = moveFrom; // Piece starting position.
-                            std::get<1>(bestMove) = move; // Piece end position.
-                            std::get<2>(bestMove) = beta; // Heuristic of that move.
+                            std::get<1>(bestMove) = move;     // Piece end position.
+                            std::get<2>(bestMove) = beta;     // Heuristic of that move.
                         }
                         if (alpha >= beta){
                             break;

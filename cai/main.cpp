@@ -37,6 +37,7 @@ void GameLoop(Board* chessboard, int level){
 
         // White plays.
         int x_start, y_start, x_end, y_end;
+        int promotion = 0;
         if (side == 1){
             printf("Playing as white.\n");
             std::cout << "Select piece (y x): ";
@@ -46,6 +47,12 @@ void GameLoop(Board* chessboard, int level){
 
             std::cout << "Select destination (y x): ";
             std::cin >> y_end >> x_end;
+
+            // If pawn is moving to top/bottom of board, ask what to promote it to.
+            if (board[y_start][x_start].getType() == 1 && (y_end == 0 || y_end == 7)){
+                std::cout << "Promote Pawn (2,3,4,5): ";
+                std::cin >> promotion;
+            }
         }
         else{
             printf("Playing as black.\n");
@@ -54,27 +61,19 @@ void GameLoop(Board* chessboard, int level){
             x_start = std::get<0>(result).x;
             y_end = std::get<1>(result).y;
             x_end = std::get<1>(result).x;
-            // printf("y_start: %d\nx_start: %d\ny_end: %d\nx_end: %d\n", y_start, x_start, y_end, x_end);
-            // std::cout << "Select piece (y x): ";
-            // std::cin >> y_start >> x_start;
-            
-            // chessboard->showAvailableMoves(y_start, x_start);
 
-            // std::cout << "Select destination (y x): ";
-            // std::cin >> y_end >> x_end;
+            // Currently AI only promotes to Queen.
+            promotion = 5;
         }
-        // board[y_start][x_start].getAvailableMoves(board, chessboard->getwKingPos(), chessboard->getbKingPos());
         Move* move = new Move(y_start, x_start, y_end, x_end);
 
         // If illegal move, redo it.
-        if (!move->applyMove(chessboard, 0, side)){
+        if (!move->applyMove(chessboard, promotion, side)){
             delete move;
             continue;
         }
         delete move;
 
-        // printf("Material black: %d\n", chessboard->getMaterial(0));
-        // printf("Material white: %d\n", chessboard->getMaterial(1));
         // Switch the side.
         if (side == 1){
             side = 0;
