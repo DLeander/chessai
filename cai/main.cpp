@@ -1,6 +1,7 @@
 #include <iostream>
 #include <tuple>
 #include <limits>
+#include <unistd.h>
 #include "headers/Piece.h"
 #include "headers/Move.h"
 #include "headers/Board.h"
@@ -21,8 +22,6 @@ void GameLoop(Board* chessboard, int level){
     std::cin.clear();
     while (true){
         chessboard->printBoard();
-
-        // White plays.
 
         promotion = 0;
         x_start = 0;
@@ -72,6 +71,13 @@ void GameLoop(Board* chessboard, int level){
         else{
             printf("Playing as black.\n");
             std::tuple <Coordinate, Coordinate, int> result = findBestMove(chessboard, board, depth, side);
+
+            if (std::get<2>(result) == std::numeric_limits<int>::min()+1){
+                std::cout<< u8"\033[2J\033[1;1H";
+                printf("Checkmate!\n");
+                return;
+            }
+
             y_start = std::get<0>(result).y;
             x_start = std::get<0>(result).x;
             y_end = std::get<1>(result).y;

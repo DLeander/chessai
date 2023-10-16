@@ -23,7 +23,7 @@ bool compareMoves(Piece** board, int row, int col, const Coordinate move1, const
 std::vector<Coordinate> orderMoves(Piece** board, int row, int col, std::vector<Coordinate> moves) {
     // Sort the moves in order of difference in value between captured pieces to reduce alpha beta pruning.
     std::sort(moves.begin(), moves.end(), [board, row, col](const Coordinate& move1, const Coordinate& move2) {
-        return compareMoves(board, row, col, move1, move2);
+        return compareMoves(board, row, col, move2, move1); // Descending order.
     });
 
     return moves;
@@ -44,7 +44,7 @@ int getSideHeuristic(Board* chessboard, Piece** board, int currentSide){
                 // "Mobility"-heuristic (The number of available moves for the piece.)
 
                 switch (type){
-                    // Scale up all pieces by 100 to make sure that piece table is not dominant.
+                    // Scale up all pieces by 1000 to make sure that piece table is not dominant.
                     case 1:
                     // Pawn
                         if (currentSide == 0){
@@ -53,7 +53,7 @@ int getSideHeuristic(Board* chessboard, Piece** board, int currentSide){
                         else{
                             squareTableVal = WhitePawnSquareTable[row][col];
                         }
-                        totMaterial = totMaterial + board[row][col].getValue()*100 + squareTableVal;
+                        totMaterial = totMaterial + board[row][col].getValue()*1000 + squareTableVal;
                         break;
                     case 2:
                     // Bishop
@@ -63,7 +63,7 @@ int getSideHeuristic(Board* chessboard, Piece** board, int currentSide){
                         else{
                             squareTableVal = WhiteBishopSquareTable[row][col];
                         }
-                        totMaterial = totMaterial + board[row][col].getValue()*100 + squareTableVal;
+                        totMaterial = totMaterial + board[row][col].getValue()*1000 + squareTableVal;
                         break;
                     case 3:
                     // Knight
@@ -73,7 +73,7 @@ int getSideHeuristic(Board* chessboard, Piece** board, int currentSide){
                         else{
                             squareTableVal = WhiteKnightSquareTable[row][col];
                         }
-                        totMaterial = totMaterial + board[row][col].getValue()*100 + squareTableVal;
+                        totMaterial = totMaterial + board[row][col].getValue()*1000 + squareTableVal;
                         break;
                     case 4:
                     // Rook
@@ -83,7 +83,7 @@ int getSideHeuristic(Board* chessboard, Piece** board, int currentSide){
                         else{
                             squareTableVal = WhiteRookSquareTable[row][col];
                         }
-                        totMaterial = totMaterial + board[row][col].getValue()*100 + squareTableVal;
+                        totMaterial = totMaterial + board[row][col].getValue()*1000 + squareTableVal;
                         break;
                     case 5:
                     // Queen
@@ -93,18 +93,18 @@ int getSideHeuristic(Board* chessboard, Piece** board, int currentSide){
                         else{
                             squareTableVal = WhiteQueenSquareTable[row][col];
                         }
-                        totMaterial = totMaterial + board[row][col].getValue()*100 + squareTableVal;
+                        totMaterial = totMaterial + board[row][col].getValue()*1000 + squareTableVal;
                         break;
                     case 6:
                     // King
-                        // Make king desirable (scaled by 1000)
+                        // Make king desirable (scaled by 10000)
                         if (currentSide == 0){
                             squareTableVal = BlackKingSquareTable[row][col];
                         }
                         else{
                             squareTableVal = WhiteKingSquareTable[row][col];
                         }
-                        totMaterial = totMaterial + board[row][col].getValue()*1000 + squareTableVal;
+                        totMaterial = totMaterial + board[row][col].getValue()*10000 + squareTableVal;
                         break;
                 }
             }
@@ -113,21 +113,24 @@ int getSideHeuristic(Board* chessboard, Piece** board, int currentSide){
     return totMaterial;
 }
 
-// Heuristic function: Difference in material+Piece Square Table value (See headers/PieceSquareTables.h)
+// Heuristic function: Material  + Piece Square Table value (See headers/PieceSquareTables.h)
 int evaluateHeuristic(Board* chessboard, Piece** board, int maxSide, int currentSide) {
     // Initialize player and opponent's total material values
     int player_material = getSideHeuristic(chessboard, board, maxSide);
     int opponent_material = getSideHeuristic(chessboard, board, !maxSide);
 
-    int material_advantage = 0;
-    if (currentSide == maxSide){
-        // Maximize side wants this as high as possible.
-        material_advantage = player_material - opponent_material;
-    }
-    else{
-        // Minimize side wants this as low as possible.
-        material_advantage = opponent_material - player_material;
-    }
+    int material_advantage = player_material + opponent_material;
+    // The commented out code below seems to perform worse compared to the code above. Save both if something else comes up.
+
+    // int material_advantage = 0;
+    // if (currentSide == maxSide){
+    //     // Maximize side wants this as high as possible.
+    //     material_advantage = player_material - opponent_material;
+    // }
+    // else{
+    //     // Minimize side wants this as low as possible.
+    //     material_advantage = opponent_material - player_material;
+    // }
     return material_advantage;
 }
 
