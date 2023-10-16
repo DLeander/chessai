@@ -73,7 +73,7 @@ int getSideHeuristic(Board* chessboard, Piece** board, int currentSide){
                         else{
                             squareTableVal = WhiteKnightSquareTable[row][col];
                         }
-                        totMaterial = totMaterial + board[row][col].getValue()*1000 + squareTableVal;
+                        totMaterial = totMaterial + board[row][col].getValue()*100 + squareTableVal;
                         break;
                     case 4:
                     // Rook
@@ -83,7 +83,7 @@ int getSideHeuristic(Board* chessboard, Piece** board, int currentSide){
                         else{
                             squareTableVal = WhiteRookSquareTable[row][col];
                         }
-                        totMaterial = totMaterial + board[row][col].getValue()*1000 + squareTableVal;
+                        totMaterial = totMaterial + board[row][col].getValue()*100 + squareTableVal;
                         break;
                     case 5:
                     // Queen
@@ -93,7 +93,7 @@ int getSideHeuristic(Board* chessboard, Piece** board, int currentSide){
                         else{
                             squareTableVal = WhiteQueenSquareTable[row][col];
                         }
-                        totMaterial = totMaterial + board[row][col].getValue()*1000 + squareTableVal;
+                        totMaterial = totMaterial + board[row][col].getValue()*100 + squareTableVal;
                         break;
                     case 6:
                     // King
@@ -104,7 +104,7 @@ int getSideHeuristic(Board* chessboard, Piece** board, int currentSide){
                         else{
                             squareTableVal = WhiteKingSquareTable[row][col];
                         }
-                        totMaterial = totMaterial + board[row][col].getValue()*10000 + squareTableVal;
+                        totMaterial = totMaterial + board[row][col].getValue()*1000 + squareTableVal;
                         break;
                 }
             }

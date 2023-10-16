@@ -280,12 +280,3 @@ bool Move::isValidMove(std::vector<Coordinate> moves, int end_row, int end_col){
     }
     return valid;
 }
-
-// Examine if the move causes a check for the opposite side.
-bool isCheckmate(){
-    return false;
-}
-
-bool Move::incorrectSideMove(Piece start_piece, bool side){
-    return (start_piece.getSide() == side);
-}

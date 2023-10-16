@@ -74,7 +74,7 @@ void GameLoop(Board* chessboard, int level){
 
             if (std::get<2>(result) == std::numeric_limits<int>::min()+1){
                 std::cout<< u8"\033[2J\033[1;1H";
-                printf("Checkmate!\n");
+                printf("The game is over.\n");
                 return;
             }
 
